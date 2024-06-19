@@ -1,0 +1,29 @@
+name: unit-testing
+
+on: push
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    env: 
+     nodejsver: '18.0'
+     test-art-name: testing-report
+     test-art-files: ./reports/*
+    steps:
+        - name: Checkout the project 
+          uses: actions/checkout@v4
+        - name: Setup Nodejs 
+          uses: actions/setup-node@v4
+          with:
+                node-version: ${{env.nodejsver}}
+        - name: Added all the dependencies
+          run: npm install
+        - name: Added the unit Testing 
+          run: npm test 
+        - name: Added code Coverage 
+          run: npm run cover
+        - name: Upload the report on Artifact 
+          uses: actions/upload-artifact@v4
+          with:
+                name: $((env.test-art-name}}
+                path: ${{env.test-art-files}}
